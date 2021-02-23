@@ -69,26 +69,42 @@ router.post('/register', (req, res) => {
                     password,
                 })
             } else {
-                const newUser = new User({
-                    username,
-                    email,
-                    password
-                });
-
-                bcrypt.genSalt(10, (err, salt) => bcrypt.hash(newUser.password, salt, (err, hash) => {
-                    if (err) {
-                        console.error(err);
+                User.findOne({ username: username})
+                .then(user => {
+                    if (user) {
+                        errors.push({msg: 'That username is taken!'})
+                        res.render('account/register', {
+                            errors,
+                            hasUsername,
+                            username,
+                            hasEmail,
+                            email,
+                            hasPassword,
+                            password,
+                        })
+                    } else {
+                        const newUser = new User({
+                            username,
+                            email,
+                            password
+                        });
+        
+                        bcrypt.genSalt(10, (err, salt) => bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            if (err) {
+                                console.error(err);
+                            }
+        
+                            newUser.password = hash;
+                            newUser.save()
+                            .then(user => {
+                                req.flash('success_msg', 'You can now log in!')
+                                res.redirect('/account/login')
+                            })
+                            .catch(err => console.error(err))
+        
+                        }))
                     }
-
-                    newUser.password = hash;
-                    newUser.save()
-                    .then(user => {
-                        req.flash('success_msg', 'You can now log in!')
-                        res.redirect('/account/login')
-                    })
-                    .catch(err => console.error(err))
-
-                }))
+                })
             }
         })
     }
@@ -114,7 +130,7 @@ router.post('/login', (req, res, next) => {
 router.get('/logout', (req, res) => {
     req.logOut();
     req.flash('success_msg', 'You have been logged out!')
-    res.redirect('/account/login')
+    res.redirect('/')
 });
 
 module.exports = router;

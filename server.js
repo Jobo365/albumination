@@ -3,9 +3,11 @@ const path = require('path');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
+const hbs = exphbs.create({
+    defaultLayout: 'main',
+})
 const flash = require('connect-flash')
 const session = require('express-session')
-const multer = require('multer');
 
 const app = express();
 
@@ -39,6 +41,12 @@ app.use((req, res, next) => {
     res.locals.error_msg = req.flash('error_msg')
     res.locals.error = req.flash('error')
     next();
+})
+app.use((req, res, next) => {
+    // res.locals.user = req.user;
+    req.user ? res.locals.userername = req.user.username : res.locals.username = 'No User'
+    res.locals.user = req.user
+    next()
 })
 app.use('/admin', adminRouter)
 app.use('/account', accountRouter)

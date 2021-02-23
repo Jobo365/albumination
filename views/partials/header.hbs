@@ -11,10 +11,15 @@
         </div>
     </nav>
     <div class="__dd_container">
-        <button class="__dropdown_link">Account</button>
+        <button class="__link __dropdown_link">Account</button>
         <div class="__dropdown">
-            <a class="__dd_link" href="#">Test</a>
-            <a class="__dd_link" href="#">test</a>
+            {{#if user}}
+            <a href="/account" class="__dd_link">Account</a>
+            <a href="account/logout" class="__dd_link">Logout</a>
+            {{else}}
+            <a href="/account/login" class="__dd_link">Log In</a>
+            <a href="/account/register" class="__dd_link">Register</a>
+            {{/if}}
         </div>
     </div>
 </header>

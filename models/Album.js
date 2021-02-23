@@ -7,6 +7,10 @@ const AlbumSchema = new mongoose.Schema( {
     owner: {
         type: String,
         required: true,
+    },
+    pictures: {
+        type: Array,
+        default: {}
     }
 });
 
