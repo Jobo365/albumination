@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="admin.css">
+
+<h1>Admin</h1>
+
+<ul>
+    <h3>ADMINS</h3>
+    {{#each users}}
+    {{#if this.admin}}
+    <li><a href="/user/{{this._id}}">{{this.username}}</a></li>
+    {{/if}}
+    {{/each}}
+    <h3>Normal Users</h3>
+    {{#each users}}
+    {{#unless this.admin}}
+    <li><a href="/user/{{this._id}}">{{this.username}}</a></li>
+    {{/unless}}
+    {{/each}}
+</ul>

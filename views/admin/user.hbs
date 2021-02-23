@@ -1,0 +1,13 @@
+<div>
+    {{> messages}}
+</div>
+{{user.username}}
+{{#if user.admin}}
+<form action="/admin/remadmin/{{user._id}}" method="POST" id="admin-form">
+    <button type="submit">Remove Admin</button>
+</form>
+{{else}}
+<form action="/admin/makeadmin/{{user._id}}" method="POST" id="admin-form">
+    <button type="submit">Make Admin</button>
+</form>
+{{/if}}

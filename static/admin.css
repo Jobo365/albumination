@@ -1,0 +1,19 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.user-list {
+	display: inline-flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+}
+
+.user-card {
+	border: 2px solid black;
+	border-radius: 10px;
+	width: 33vw;
+	padding: 15px;
+	margin: 2px 0;
+}
