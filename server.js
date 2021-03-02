@@ -3,9 +3,6 @@ const path = require('path');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
-const hbs = exphbs.create({
-    defaultLayout: 'main',
-})
 const flash = require('connect-flash')
 const session = require('express-session')
 
@@ -15,7 +12,8 @@ const adminRouter = require('./routes/admin/admin');
 const accountRouter = require('./routes/account');
 const redirectsRouter = require('./routes/redirects')
 const userRouter = require('./routes/admin/user')
-const albumRouter = require('./routes/albums')
+const albumsRouter = require('./routes/albums')
+const albumRouter = require('./routes/album')
 
 require('./config/passport')(passport);
 
@@ -43,7 +41,7 @@ app.use((req, res, next) => {
     next();
 })
 app.use((req, res, next) => {
-    // res.locals.user = req.user;
+    res.locals.user = req.user;
     req.user ? res.locals.userername = req.user.username : res.locals.username = 'No User'
     res.locals.user = req.user
     next()
@@ -51,7 +49,8 @@ app.use((req, res, next) => {
 app.use('/admin', adminRouter)
 app.use('/account', accountRouter)
 app.use('/user', userRouter)
-app.use('/albums', albumRouter)
+app.use('/albums', albumsRouter)
+app.use('/album', albumRouter)
 app.use('/', redirectsRouter)
 
 const PORT = process.env.PORT || 3000;

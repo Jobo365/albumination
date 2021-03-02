@@ -24,18 +24,11 @@ router.get('/', authUser, async (req, res) => {
     })
 })
 
-router.get('/:id', authUser, async (req, res) => {
-    const album = await Album.findById(req.params.id).lean();
-    res.render('album/album', {
-        album
-    })
-})
-
 router.get('/newalbum', authUser, (req, res) => {
     res.render('album/newalbum')
 })
 
-router.post('/', (req, res) => {
+router.post('/newalbum', (req, res) => {
     const { name } = req.body;
 
     let errors = [];
@@ -54,7 +47,7 @@ router.post('/', (req, res) => {
             if (album) {
                 if (album.owner === req.user.id) {
                     req.flash('error_msg', 'That album name is already in use!')
-                    res.redirect('/admin/products')
+                    res.redirect('/albums/newalbum')
                 } else {
                     const newAlbum = new Album({
                         name,
@@ -73,7 +66,7 @@ router.post('/', (req, res) => {
             } else {
                 const newAlbum = new Album({
                     name,
-                    owner: req.user.id
+                    owner: String(req.user.id)
                 })
 
                 newAlbum.save()
